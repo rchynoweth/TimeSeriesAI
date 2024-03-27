@@ -1,0 +1,21 @@
+{
+    "id": "d1beded4-1a7a-4a81-ae0d-cc349c5e9fb7",
+    "object": "chat.completion",
+    "created": 1711548376,
+    "model": "llama-2-70b-chat-030424",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "\nHere's a summary of the evaluation statistics for All Purpose Compute in Databricks:\n\n* Mean Absolute Error (MAE): 922.8\n* Mean Squared Error (MSE): 1790209.9\n* Root Mean Squared Error (RMSE): 1337.9873\n\nThese statistics indicate that the model has a relatively high average absolute error and mean squared error, but a lower root mean squared error. This suggests that while the model may not be highly accurate in its predictions, it is consistent in its errors and has a relatively tight distribution of residuals.\n\nDo you want more information on these statistics or a deeper analysis of the data?"
+            },
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 342,
+        "completion_tokens": 163,
+        "total_tokens": 505
+    }
+}
