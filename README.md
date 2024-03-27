@@ -15,3 +15,8 @@ pip install databricks-sql-connector
 pip install python-dotenv
 
 ```
+
+
+## User Interface 
+
+![](./SampleUI.png)
