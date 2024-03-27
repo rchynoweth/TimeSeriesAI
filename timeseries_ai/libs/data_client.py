@@ -66,7 +66,7 @@ class DataClient():
         f.ds as date
         --, workspace_id
         , f.sku
-        , f.y as dbus
+        , f.y 
         , GREATEST(0, f.yhat) as yhat
         , GREATEST(0, f.yhat_lower) as yhat_lower
         , GREATEST(0, f.yhat_upper) as yhat_upper
@@ -82,7 +82,7 @@ class DataClient():
         `date`
         --, workspace_id
         , sku
-        , dbus
+        , y
         , yhat
         , yhat_lower
         , yhat_upper
