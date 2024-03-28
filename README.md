@@ -39,5 +39,5 @@ Please note that running "Analyze Forecasts" for "All Skus" is current'y not sup
 ## User Interface Example
 
 <div style="text-align: center;">
-<video src="docs/TimeSeriesAI_Video.mov" controls="controls" style="max-width: 730px;"></video>
+<video src="https://github.com/rchynoweth/TimeSeriesAI/blob/main/docs/TimeSeriesAI_Video.mov" controls="controls" style="max-width: 730px;"></video>
 </div>
