@@ -1,7 +1,10 @@
 # TimeSeriesAI
 
-TimeSeriesAI is a demo repository demonstrating how to generate time series forecast and leverage LLMs to generate a statistical analysis and summary of the forecasted values. Since it is a demo the forecasts are generated in batch, but could be done via a REST API if required. Additionally, the LLM behind the scenes is [DBRX](https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm), an open source LLM developed by Databricks, and the [Databricks Foundation Model APIs](https://docs.databricks.com/en/machine-learning/foundation-models/index.html). 
+TimeSeriesAI is a demo repository showcasing time series forecasting and the utilization of LLMs for generating statistical analyses and summaries of forecasted values. Although forecasts are currently generated in batches, integration with a REST API is feasible if needed. The underlying LLM utilized in this demonstration is [DBRX](https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm), an open-source LLM developed by Databricks. DBRX is hosted using [Databricks Foundation Model APIs](https://docs.databricks.com/en/machine-learning/foundation-models/index.html). The model is not fine-tuned, but can be done so using various blogs or academic papers providing analysis or research in time series data. For example, the [FB Prophet Paper](https://peerj.com/preprints/3190/) could be a great fine-tuning data point. Please note that I am not sure if there would be legal/copyright restrictions around using certain content. 
 
+<div style="text-align: center;">
+<video src="https://github.com/rchynoweth/TimeSeriesAI/assets/79483287/ca5a5d8c-bf4d-43d1-bcd4-495dc3630514" controls="controls" style="max-width: 730px;"></video>
+</div>
 
 
 ## Install and Run Application 
@@ -35,13 +38,4 @@ python run_app.py
 ```
 
 Please note that running "Analyze Forecasts" for "All Skus" is current'y not supported. 
-
-## User Interface Example
-
-<div style="text-align: center;">
-<video src="https://github.com/rchynoweth/TimeSeriesAI/assets/79483287/ca5a5d8c-bf4d-43d1-bcd4-495dc3630514" controls="controls" style="max-width: 730px;"></video>
-</div>
-
-
-
 
