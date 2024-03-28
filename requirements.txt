@@ -1,3 +1,6 @@
 dash==2.16.1
 databricks-sql-connector==3.1.1
 python-dotenv==1.0.1
+pyspark==3.5.1
+prophet==1.1.5
+scikit-learn==1.4.1.post1

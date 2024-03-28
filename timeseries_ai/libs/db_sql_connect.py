@@ -1,5 +1,6 @@
 from databricks import sql 
 from dotenv import load_dotenv
+import logging 
 import os
 
 # Load environment variables from .env file
@@ -12,6 +13,9 @@ class DBSQLClient():
         self.dbtoken = os.getenv('DATABRICKS_TOKEN')
         self.server_hostname = os.environ.get('DATABRICKS_WORKSPACE')
         self.http_path = os.environ.get('WAREHOUSE_HTTP_PATH')
+        
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        self.logger = logging.getLogger()
 
         
     def execute_query(self, query):
@@ -44,6 +48,7 @@ class DBSQLClient():
         
 
         results = self.execute_query(query=query_string)
+        self.logger.info("Rendering Forecast Values")
         return [{'Date': r.date, 'y': r.y, 'yhat': r.yhat, 'yhat_lower': r.yhat_lower, 'yhat_upper': r.yhat_upper} for r in results]
 
 
@@ -62,4 +67,21 @@ class DBSQLClient():
         
 
         results = self.execute_query(query=query_string)
+        self.logger.info("Rendering Actual Values")
         return [{'Date': r.date, 'y': r.y} for r in results]
+    
+
+    def get_model_eval(self, sku='All', catalog_name='rac_demo_catalog', schema_name='default', table_name='dbu_forecast_evaluations'):
+        assert sku in ['ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
+        query_string = f"""
+            select sku, mae, rmse, mse
+            from {catalog_name}.{schema_name}.{table_name}
+            where sku = '{sku}'
+            """
+        
+
+        results = self.execute_query(query=query_string)
+        self.logger.info("Obtaining Evaluation Metrics")
+        return [{'sku': r.sku, 'mae': r.mae, 'rmse': r.rmse, 'mse': r.mse} for r in results]
+
+
