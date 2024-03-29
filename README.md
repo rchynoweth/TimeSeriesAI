@@ -9,15 +9,16 @@ TimeSeriesAI is a demo repository showcasing time series forecasting and the uti
 
 ## Install and Run Application 
 
-In Databricks you will need to run [run_forecast.py](timeseries_ai/run_forecasts.py) notebook to generate the forecasts which requires access to [Databricks System Billing Tables](https://docs.databricks.com/en/administration-guide/system-tables/billing.html). 
+In Databricks you will need to run [run_forecast.py](timeseries_ai/run_forecasts.py) notebook to generate the forecasts which requires access to [Databricks System Billing Tables](https://docs.databricks.com/en/administration-guide/system-tables/billing.html). Please use DBR 13.3LTS ML or higher to produce forecasts. 
 
-You will likely need to make edits to the [db_sql_connector.py](timeseries_ai/libs/db_sql_connect.py) to read from your tables because I hard coded mine and don't feel like parameterizing them. 
 
 Next you will need to have the following `.env` file to connect to Databricks from your local desktop. 
 ```
 DATABRICKS_TOKEN=<PAT TOKEN>
 DATABRICKS_WORKSPACE=<Databricks Workspace URL> #adb-<workspaceid>.<##>.azuredatabricks.net
 WAREHOUSE_HTTP_PATH=<SQL Warehouse Path> # /sql/1.0/warehouses/<ID>
+DATABRICKS_CATALOG=<catalog with forecast data>
+DATABRICKS_SCHEMA=<schema with forecast data>
 ```
 
 

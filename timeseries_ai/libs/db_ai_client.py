@@ -18,15 +18,17 @@ class DBAIClient():
         # Access an environment variable
         self.dbtoken = os.getenv('DATABRICKS_TOKEN')
         self.db_workspace = os.environ.get('DATABRICKS_WORKSPACE')
-        # self.endpoint_url = f"https://{self.db_workspace}/serving-endpoints/databricks-llama-2-70b-chat/invocations"
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        self.logger = logging.getLogger()
         self.endpoint_url = f"https://{self.db_workspace}/serving-endpoints/databricks-dbrx-instruct/invocations"
         self.reset_messages()
 
     def send_chat(self):
         payload = {"messages": self.messages}
         headers = {"Content-Type": "application/json"}
+        self.logger.info(f"Payload: {payload}")
         response = requests.post(self.endpoint_url, headers=headers, json=payload, auth=("token", self.dbtoken))
-        logging.info(msg=response.text)
+        self.logger.info(f"Response Text: {response.text}")
         return json.loads(response.content.decode('utf-8'))
 
     def compile_message(self, model_forecasts, model_eval, sku):
@@ -38,14 +40,12 @@ class DBAIClient():
         num_upper_alerts = str(len(yhat_above_upper))
         num_lower_alerts = str(len(yhat_below_lower))
 
-        if sku != 'All':
-            rmse = model_eval[0].get('rmse')
-            mae = model_eval[0].get('mae')
-            mse = model_eval[0].get('mse')
+        rmse = model_eval[0].get('rmse')
+        mae = model_eval[0].get('mae')
+        mse = model_eval[0].get('mse')
 
-            msg = f"We have observed that there are {num_upper_alerts} occurences where the y value was above the upper threshold (yhat_upper) and {num_lower_alerts} occurrences where the y value was below the lower threshold (yhat_lower). Additionally, the {sku} sku has the following metrics: MAE = {mae}, RMSE = {rmse}, and MSE = {mse}"
-        else :
-            msg = f"We have observed that there are {num_upper_alerts} occurences where the y value was above the upper threshold (yhat_upper) and {num_lower_alerts} occurrences where the y value was below the lower threshold (yhat_lower). "
+        msg = f"We have observed that there are {num_upper_alerts} occurences where the y value was above the upper threshold (yhat_upper) and {num_lower_alerts} occurrences where the y value was below the lower threshold (yhat_lower). Additionally, the {sku} sku has the following metrics: MAE = {mae}, RMSE = {rmse}, and MSE = {mse}"
+
 
 
 

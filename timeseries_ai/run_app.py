@@ -5,6 +5,7 @@ import logging
 from libs.db_sql_connect import DBSQLClient
 from libs.db_ai_client import DBAIClient
 
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
@@ -12,8 +13,8 @@ db_conn = DBSQLClient()
 db_ai_client = DBAIClient()
 actuals = db_conn.get_actual_values()
 df = pd.DataFrame(actuals)
-sku_options = ['All', 'ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
-prev_val = 'All'
+sku_options = ['ALL', 'ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
+prev_val = 'ALL'
 
 
 
@@ -21,7 +22,7 @@ app = Dash(__name__)
 
 app.layout = html.Div([
     html.H1(children='Time Series AI', style={'textAlign':'center'}),
-    dcc.Dropdown(sku_options, 'All', id='dropdown-selection'),
+    dcc.Dropdown(sku_options, 'ALL', id='dropdown-selection'),
     html.Button('Generate Forecasts', id='generate-forecasts-button', n_clicks=0),  
     html.Button('Analyze Forecasts', id='generate-analysis-button', n_clicks=0),  
     dcc.Graph(id='graph-content'),

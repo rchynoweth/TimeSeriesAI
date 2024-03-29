@@ -13,6 +13,8 @@ class DBSQLClient():
         self.dbtoken = os.getenv('DATABRICKS_TOKEN')
         self.server_hostname = os.environ.get('DATABRICKS_WORKSPACE')
         self.http_path = os.environ.get('WAREHOUSE_HTTP_PATH')
+        self.catalog_name = os.environ.get('DATABRICKS_CATALOG')
+        self.schema_name = os.environ.get('DATABRICKS_SCHEMA')
         
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
         self.logger = logging.getLogger()
@@ -34,14 +36,12 @@ class DBSQLClient():
         return self.execute_query("SHOW SCHEMAS")
 
 
-    def get_forecast_values(self, sku='All', catalog_name='rac_demo_catalog', schema_name='default', table_name='vw_dbu_forecasts'):
-        assert sku in ['All', 'ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
+    def get_forecast_values(self, sku='ALL', table_name='vw_dbu_forecasts'):
+        assert sku in ['ALL', 'ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
         query_string = f"""
             select date, sum(yhat) as yhat, sum(yhat_lower) as yhat_lower, sum(yhat_upper) as yhat_upper, sum(y) as y
-            from {catalog_name}.{schema_name}.{table_name}
+            from {self.catalog_name}.{self.schema_name}.{table_name}
             """
-        if sku != 'All':
-            query_string += f" where sku = '{sku}'"
 
         query_string += " group by all"
         query_string += " order by date desc"
@@ -53,14 +53,12 @@ class DBSQLClient():
 
 
 
-    def get_actual_values(self, sku='All', catalog_name='rac_demo_catalog', schema_name='default', table_name='vw_dbu_forecasts'):
-        assert sku in ['All', 'ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
+    def get_actual_values(self, sku='ALL', table_name='vw_dbu_forecasts'):
+        assert sku in ['ALL', 'ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
         query_string = f"""
             select date, sum(y) as y
-            from {catalog_name}.{schema_name}.{table_name}
+            from {self.catalog_name}.{self.schema_name}.{table_name}
             """
-        if sku != 'All':
-            query_string += f" where sku = '{sku}'"
 
         query_string += " group by all"
         query_string += " order by date desc"
@@ -71,11 +69,11 @@ class DBSQLClient():
         return [{'Date': r.date, 'y': r.y} for r in results]
     
 
-    def get_model_eval(self, sku='All', catalog_name='rac_demo_catalog', schema_name='default', table_name='dbu_forecast_evaluations'):
-        assert sku in ['ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS']
+    def get_model_eval(self, sku='ALL', table_name='dbu_forecast_evaluations'):
+        assert sku in ['ALL_PURPOSE', 'MODEL_INFERENCE','SQL','DLT','JOBS', 'ALL']
         query_string = f"""
             select sku, mae, rmse, mse
-            from {catalog_name}.{schema_name}.{table_name}
+            from {self.catalog_name}.{self.schema_name}.{table_name}
             where sku = '{sku}'
             """
         
