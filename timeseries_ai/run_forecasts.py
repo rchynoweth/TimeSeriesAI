@@ -9,9 +9,7 @@ schema_name = 'default'
 
 # COMMAND ----------
 
-spark.sql(f'create catalog if not exists {catalog_name}')
 spark.sql(f'use catalog {catalog_name}')
-spark.sql(f'create schema if not exists {schema_name}')
 spark.sql(f'use schema {schema_name}')
 
 # COMMAND ----------
@@ -21,7 +19,8 @@ spark.sql(f'use schema {schema_name}')
 
 # COMMAND ----------
 
-from libs import *
+from libs.dbu_forecaster import DBUForecaster, ForecastHelper
+from libs.data_client import DataClient
 import uuid 
 from pyspark.sql.functions import *
 
@@ -85,6 +84,23 @@ display(evaluation_df)
   .mode('append')
   .saveAsTable('dbu_forecast_evaluations')
 )
+
+# COMMAND ----------
+
+all_df = spark.sql("""SELECT ds, 'ALL' as sku, SUM(y) AS y, SUM(yhat) AS yhat, SUM(yhat_upper) AS yhat_upper, SUM(yhat_lower) as yhat_lower, DATE '2023-03-26' as training_date
+FROM dbu_forecasts
+GROUP BY ds""")
+
+all_evals = (ForecastHelper.eval_forecasts(df=all_df, forecast_client=forecast_client)).withColumn('run_id', lit('396d5b3b-b30b-4fe0-98c8-f2f85cf46ac1'))
+display(all_evals)
+
+# COMMAND ----------
+
+all_evals.write.mode('append').saveAsTable('dbu_forecast_evaluations')
+
+# COMMAND ----------
+
+display(spark.read.table('dbu_forecast_evaluations'))
 
 # COMMAND ----------
 
